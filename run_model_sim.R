@@ -265,4 +265,4 @@ data.list <- list(
 
 fit <- stan(model_code=model_code,data=data.list,cores=n_cores,control=list(adapt_delta=.99))
 
-saveRDS(fit,file=paste('fitted_models_sim/model_fit_sim_',t,'.RDS',sep=''))
+saveRDS(fit,file=paste('model_fits_sim/model_fit_sim_',t,'.RDS',sep=''))
