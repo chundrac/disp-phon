@@ -82,7 +82,7 @@ functions {
 data {
   int<lower=1> N;                           //number of nodes
   int<lower=1> P;                           //number of present geo values
-  int<lower=0> M;                           //number of missing geo values
+  int<lower=1> M;                           //number of missing geo values
   int<lower=1> B;                           //number of branches
   int<lower=1> D;                           //number of segments
   int<lower=1> J;                           //number of features
