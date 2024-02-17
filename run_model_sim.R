@@ -120,6 +120,7 @@ lat <- lat[!is.na(lat)]
 
 data.list <- list(
   N=N,
+  M=X,
   P=Y,
   B=B,
   D=D,
