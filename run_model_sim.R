@@ -101,17 +101,29 @@ lens.to.root <- lens.to.root[child,child]
 
 root.index <- T+1
 
-missing.inds <- which(is.na(lon))
+missing.inds <- (length(tree$tip.label)+1):(length(tree$tip.label)+tree$Nnode)
 missing.inds <- missing.inds[which(missing.inds!=root.index)]
 present.inds <- which(!is.na(lon))
 
 X = length(missing.inds)
 Y = length(present.inds)
 
+Sigma11 = matrix(nrow=X,ncol=X)
+for (x in 1:X) {
+  for (y in 1:X) {
+    Sigma11[x,y] <- mrca.matrix[missing.inds[x],missing.inds[y]]
+  }
+}
 Sigma22 = matrix(nrow=Y,ncol=Y)
 for (x in 1:Y) {
   for (y in 1:Y) {
     Sigma22[x,y] <- mrca.matrix[present.inds[x],present.inds[y]]
+  }
+}
+Sigma12 = matrix(nrow=X,ncol=Y)
+for (x in 1:X) {
+  for (y in 1:Y) {
+    Sigma12[x,y] <- mrca.matrix[missing.inds[x],present.inds[y]]
   }
 }
 
@@ -120,8 +132,8 @@ lat <- lat[!is.na(lat)]
 
 data.list <- list(
   N=N,
-  M=X,
   P=Y,
+  M=X,
   B=B,
   D=D,
   J=J,
@@ -132,7 +144,9 @@ data.list <- list(
   lon=lon,
   lat=lat,
   ancestor_lens=lens.to.root,
-  mrca22=Sigma22
+  mrca22=Sigma22,
+  mrca11=Sigma11,
+  mrca12=Sigma12
 )
 
 fit <- stan(file='model_joint.stan',data=data.list,cores=n_cores,control=list(adapt_delta=.99))
